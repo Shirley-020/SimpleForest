@@ -1,0 +1,32 @@
+# Visual Studio 用户特定文件和缓存目录（必须忽略）
+.vs/              
+*.vcxproj.user    
+*.user
+*.userosscache
+
+# 构建输出目录（必须忽略）
+[Bb]in/           
+[Oo]bj/           
+[Bb]uild/         
+[Oo]ut/           
+x64/              
+x86/              
+Debug/            
+Release/          
+
+# 编译生成的二进制文件
+*.exe             
+*.dll             
+*.ilk             
+*.pdb             
+*.lib             
+
+# OpenGL 相关的缓存或中间文件（如果有的话）
+*.spv           
+*.cache
+
+# 系统临时文件和编辑器备份
+.DS_Store        
+Thumbs.db         
+*.swp             
+*~                

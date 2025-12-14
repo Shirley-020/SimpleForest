@@ -1,0 +1,21 @@
+# ninja log v6
+2	55	7872137669880793	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-mkdir	9b9223bb0e0b4ff
+2	55	7872137669880793	C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-mkdir	9b9223bb0e0b4ff
+56	2189	7872137691215766	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-download	69a19c518fe7c379
+56	2189	7872137691215766	C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-download	69a19c518fe7c379
+2189	2238	7872137691706775	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-update	868ab0e418808a4f
+2189	2238	7872137691706775	C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-update	868ab0e418808a4f
+2238	2284	7872137692172713	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-patch	290dd8094d5f302b
+2238	2284	7872137692172713	C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-patch	290dd8094d5f302b
+2284	2328	7872137692615826	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-configure	ca85e0d002508bc1
+2284	2328	7872137692615826	C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-configure	ca85e0d002508bc1
+2328	2373	7872137693062817	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-build	f953331616eb1bc5
+2328	2373	7872137693062817	C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-build	f953331616eb1bc5
+2373	2421	7872137693532402	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-install	6a1052b7aa5ff47d
+2373	2421	7872137693532402	C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-install	6a1052b7aa5ff47d
+2421	2468	7872137694008449	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-test	9c81c4b481ec4319
+2421	2468	7872137694008449	C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-test	9c81c4b481ec4319
+2468	2532	7872137694647460	CMakeFiles/glfw-populate-complete	872aa88b14cad18f
+2468	2532	7872137694647460	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-done	872aa88b14cad18f
+2468	2532	7872137694647460	C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/CMakeFiles/glfw-populate-complete	872aa88b14cad18f
+2468	2532	7872137694647460	C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-done	872aa88b14cad18f

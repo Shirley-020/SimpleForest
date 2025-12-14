@@ -16,7 +16,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "C:/Users/17385/Desktop/SimpleForest/include/stb/stb_image.h"
+#include "../SimpleForest/include/stb/stb_image.h"  //改成绝对路径
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -242,7 +242,7 @@ Mesh createCube() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0); // Pos
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float))); // Normal
-    glEnableVertexAttribArray(2); // <-- 新增纹理坐标
+    glEnableVertexAttribArray(2); // 纹理坐标
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float))); // TexCoord
 
     glBindVertexArray(0);
@@ -351,7 +351,7 @@ Mesh createCylinder(int segments = 16, float height = 1.0f, float radius = 0.2f)
             verts.push_back(n.x); verts.push_back(n.y); verts.push_back(n.z); // Normal 
 
             float u_coord = (float)i / segments; // U坐标：0到1
-            verts.push_back(u_coord); verts.push_back(v_coord); // <-- 新增 UVs
+            verts.push_back(u_coord); verts.push_back(v_coord); // UVs
         }
     }
 
@@ -380,7 +380,7 @@ Mesh createCylinder(int segments = 16, float height = 1.0f, float radius = 0.2f)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0); // Pos
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float))); // Normal
-    glEnableVertexAttribArray(2); // <-- 新增
+    glEnableVertexAttribArray(2); 
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float))); // TexCoord
 
     glBindVertexArray(0);
@@ -1003,23 +1003,23 @@ int main() {
 
     // 加载纹理
     std::vector<std::string> skyboxFaces = {
-        "C:/Users/17385/Desktop/SimpleForest/objects/right.jpg",
-        "C:/Users/17385/Desktop/SimpleForest/objects/left.jpg",
-        "C:/Users/17385/Desktop/SimpleForest/objects/top.jpg",
-        "C:/Users/17385/Desktop/SimpleForest/objects/bottom.jpg",
-        "C:/Users/17385/Desktop/SimpleForest/objects/front.jpg",
-        "C:/Users/17385/Desktop/SimpleForest/objects/back.jpg"
+        "../SimpleForest/objects/right.jpg",
+        "../SimpleForest/objects/left.jpg",
+        "../SimpleForest/objects/top.jpg",
+        "../SimpleForest/objects/bottom.jpg",
+        "../SimpleForest/objects/front.jpg",
+        "../SimpleForest/objects/back.jpg"
     };
     unsigned int skyboxTexture = loadCubemap(skyboxFaces);
 
     // 加载新的纹理文件
-	unsigned int woodTexture = loadTexture("C:/Users/17385/Desktop/SimpleForest/objects/wood_texture.jpg");   // 木纹纹理
-	unsigned int barkTexture = loadTexture("C:/Users/17385/Desktop/SimpleForest/objects/bark_texture.jpg");    //  树干纹理
-	unsigned int leavesTexture = loadTexture("C:/Users/17385/Desktop/SimpleForest/objects/leaves_texture.jpg");   // 树叶纹理
-    unsigned int roofTexture = loadTexture("C:/Users/17385/Desktop/SimpleForest/objects/roof_shingles.jpg");        // 屋顶瓦片纹理
-    unsigned int stepTexture = loadTexture("C:/Users/17385/Desktop/SimpleForest/objects/stone_step.jpg");          // 石头台阶纹理
-    unsigned int windowGlassTexture = loadTexture("C:/Users/17385/Desktop/SimpleForest/objects/window_glass.jpg"); // 玻璃纹理 
-	unsigned int doorTexture = loadTexture("C:/Users/17385/Desktop/SimpleForest/objects/door.jpg");              // 木门纹理
+	unsigned int woodTexture = loadTexture("../SimpleForest/objects/wood_texture.jpg");   // 木纹纹理
+	unsigned int barkTexture = loadTexture("../SimpleForest/objects/bark_texture.jpg");    //  树干纹理
+	unsigned int leavesTexture = loadTexture("../SimpleForest/objects/leaves_texture.jpg");   // 树叶纹理
+    unsigned int roofTexture = loadTexture("../SimpleForest/objects/roof_shingles.jpg");        // 屋顶瓦片纹理
+    unsigned int stepTexture = loadTexture("../SimpleForest/objects/stone_step.jpg");          // 石头台阶纹理
+    unsigned int windowGlassTexture = loadTexture("../SimpleForest/objects/window_glass.jpg"); // 玻璃纹理 
+	unsigned int doorTexture = loadTexture("../SimpleForest/objects/door.jpg");              // 木门纹理
     // 光照参数
     glm::vec3 lightDir = glm::normalize(glm::vec3(-0.3f, -1.0f, -0.5f));
     glm::vec3 lightColor = glm::vec3(1.0f, 0.95f, 0.9f);

@@ -930,6 +930,16 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
     }
+    // 添加Tab键切换鼠标捕获
+    if (key == GLFW_KEY_TAB && action == GLFW_PRESS) {
+        captureMouse = !captureMouse;
+        glfwSetInputMode(window, GLFW_CURSOR, captureMouse ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+        if (captureMouse) {
+            // 鼠标捕获后设置到窗口中心
+            glfwSetCursorPos(window, SCR_WIDTH / 2, SCR_HEIGHT / 2);
+            camera.firstMouse = true;
+        }
+    }
     if (key >= 0 && key < 1024) {
         if (action == GLFW_PRESS) keys[key] = true;
         else if (action == GLFW_RELEASE) keys[key] = false;
@@ -952,7 +962,7 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "优化森林小屋", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "SimpleForest", NULL, NULL);
     if (!window) {
         std::cerr << "Failed to create window\n"; glfwTerminate(); return -1;
     }
@@ -966,6 +976,7 @@ int main() {
     glfwSetCursorPosCallback(window, cursor_pos_callback);
     glfwSetKeyCallback(window, key_callback);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	
     // 初始化随机数种子（每棵树的数量/大小/高度随机）
     srand((unsigned int)glfwGetTime());
 
@@ -978,7 +989,7 @@ int main() {
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
-
+	
     // 加载着色器
     Shader basicShader;
     if (!basicShader.load("shaders/basic.vert", "shaders/basic.frag")) {
@@ -1142,35 +1153,34 @@ int main() {
         glDepthFunc(GL_LESS);
         glDepthMask(GL_TRUE);
 
-        // ImGui界面
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        ImGui::Begin("场景控制");
+        ImGui::Begin("Scene Control");
         ImGui::Text("FPS: %.1f", 1.0f / deltaTime);
         ImGui::Separator();
 
-        // 全局纹理开关
-        ImGui::Text("全局纹理/纯色切换");
-        ImGui::Checkbox("启用纹理贴图 (墙壁/树木)", &useTextureGlobally);
+        // Global texture toggle
+        ImGui::Text("Global Texture/Solid Color");
+        ImGui::Checkbox("Enable Textures (Walls/Trees)", &useTextureGlobally);
         ImGui::Separator();
 
-        ImGui::Text("小屋材质 (纯色备用/其他组件)");
-        ImGui::ColorEdit3("墙壁颜色", (float*)&woodColor.diffuse);
-        ImGui::ColorEdit3("屋顶颜色", (float*)&roofColor.diffuse);
-        ImGui::ColorEdit3("窗户颜色", (float*)&windowColor.diffuse);
-        ImGui::ColorEdit3("门颜色", (float*)&doorColor.diffuse);
+        ImGui::Text("Cabin Materials (Solid Color/Other)");
+        ImGui::ColorEdit3("Wall Color", (float*)&woodColor.diffuse);
+        ImGui::ColorEdit3("Roof Color", (float*)&roofColor.diffuse);
+        ImGui::ColorEdit3("Window Color", (float*)&windowColor.diffuse);
+        ImGui::ColorEdit3("Door Color", (float*)&doorColor.diffuse);
         ImGui::Separator();
-        ImGui::Text("树木材质 (纯色备用)");
-        ImGui::ColorEdit3("树干颜色", (float*)&treeTrunkColor.diffuse);
-        ImGui::ColorEdit3("树冠颜色", (float*)&treeCrownColor.diffuse);
+        ImGui::Text("Tree Materials (Solid Color)");
+        ImGui::ColorEdit3("Trunk Color", (float*)&treeTrunkColor.diffuse);
+        ImGui::ColorEdit3("Crown Color", (float*)&treeCrownColor.diffuse);
         ImGui::Separator();
-        ImGui::Text("光照");
-        ImGui::SliderFloat3("光源方向", (float*)&lightDir.x, -1.0f, 1.0f);
-        ImGui::ColorEdit3("光源颜色", (float*)&lightColor);
+        ImGui::Text("Lighting");
+        ImGui::SliderFloat3("Light Direction", (float*)&lightDir.x, -1.0f, 1.0f);
+        ImGui::ColorEdit3("Light Color", (float*)&lightColor);
 
-        if (ImGui::Button(captureMouse ? "释放鼠标" : "捕获鼠标")) {
+        if (ImGui::Button(captureMouse ? "Release Mouse" : "Capture Mouse")) {
             captureMouse = !captureMouse;
             glfwSetInputMode(window, GLFW_CURSOR, captureMouse ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
             camera.firstMouse = true;

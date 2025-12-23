@@ -20,8 +20,8 @@ project(imgui-populate NONE)
 include(ExternalProject)
 ExternalProject_Add(imgui-populate
                      "UPDATE_DISCONNECTED" "False" "DOWNLOAD_EXTRACT_TIMESTAMP" "TRUE" "EXTERNALPROJECT_INTERNAL_ARGUMENT_SEPARATOR" "URL" "https://github.com/ocornut/imgui/archive/refs/tags/v1.90.4.zip"
-                    SOURCE_DIR          "C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/imgui-src"
-                    BINARY_DIR          "C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/imgui-build"
+                    SOURCE_DIR          "F:/STUDY/graphics/SimpleForest/out/build/x64-Debug/_deps/imgui-src"
+                    BINARY_DIR          "F:/STUDY/graphics/SimpleForest/out/build/x64-Debug/_deps/imgui-build"
                     CONFIGURE_COMMAND   ""
                     BUILD_COMMAND       ""
                     INSTALL_COMMAND     ""

@@ -20,8 +20,8 @@ project(glfw-populate NONE)
 include(ExternalProject)
 ExternalProject_Add(glfw-populate
                      "UPDATE_DISCONNECTED" "False" "DOWNLOAD_EXTRACT_TIMESTAMP" "TRUE" "EXTERNALPROJECT_INTERNAL_ARGUMENT_SEPARATOR" "URL" "https://github.com/glfw/glfw/archive/refs/tags/3.3.8.zip"
-                    SOURCE_DIR          "C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-src"
-                    BINARY_DIR          "C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-build"
+                    SOURCE_DIR          "F:/STUDY/graphics/SimpleForest/out/build/x64-Debug/_deps/glfw-src"
+                    BINARY_DIR          "F:/STUDY/graphics/SimpleForest/out/build/x64-Debug/_deps/glfw-build"
                     CONFIGURE_COMMAND   ""
                     BUILD_COMMAND       ""
                     INSTALL_COMMAND     ""

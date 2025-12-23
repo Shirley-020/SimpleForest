@@ -23,7 +23,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = "F:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SC:\Users\17385\Desktop\SimpleForest\out\build\x64-Debug\_deps\imgui-subbuild -BC:\Users\17385\Desktop\SimpleForest\out\build\x64-Debug\_deps\imgui-subbuild
+  command = "F:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SF:\STUDY\graphics\SimpleForest\out\build\x64-Debug\_deps\imgui-subbuild -BF:\STUDY\graphics\SimpleForest\out\build\x64-Debug\_deps\imgui-subbuild
   description = Re-running CMake...
   generator = 1
 

@@ -5,8 +5,8 @@ cmake_minimum_required(VERSION ${CMAKE_VERSION}) # this file comes with cmake
 
 # Make file names absolute:
 #
-get_filename_component(filename "C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip" ABSOLUTE)
-get_filename_component(directory "C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-src" ABSOLUTE)
+get_filename_component(filename "F:/STUDY/graphics/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip" ABSOLUTE)
+get_filename_component(directory "F:/STUDY/graphics/SimpleForest/out/build/x64-Debug/_deps/glfw-src" ABSOLUTE)
 
 message(VERBOSE "extracting...
      src='${filename}'

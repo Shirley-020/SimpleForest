@@ -22,14 +22,14 @@ function(check_file_hash has_hash hash_is_good)
   set("${has_hash}" TRUE PARENT_SCOPE)
 
   message(VERBOSE "verifying file...
-       file='C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip'")
+       file='F:/STUDY/graphics/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip'")
 
-  file("" "C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip" actual_value)
+  file("" "F:/STUDY/graphics/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip" actual_value)
 
   if(NOT "${actual_value}" STREQUAL "")
     set("${hash_is_good}" FALSE PARENT_SCOPE)
     message(VERBOSE " hash of
-    C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip
+    F:/STUDY/graphics/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip
   does not match expected value
     expected: ''
       actual: '${actual_value}'")
@@ -71,32 +71,32 @@ function(sleep_before_download attempt)
   execute_process(COMMAND "${CMAKE_COMMAND}" -E sleep "${sleep_seconds}")
 endfunction()
 
-if(EXISTS "C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip")
+if(EXISTS "F:/STUDY/graphics/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip")
   check_file_hash(has_hash hash_is_good)
   if(has_hash)
     if(hash_is_good)
       message(VERBOSE "File already exists and hash match (skip download):
-  file='C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip'
+  file='F:/STUDY/graphics/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip'
   =''"
       )
       return()
     else()
       message(VERBOSE "File already exists but hash mismatch. Removing...")
-      file(REMOVE "C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip")
+      file(REMOVE "F:/STUDY/graphics/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip")
     endif()
   else()
     message(VERBOSE "File already exists but no hash specified (use URL_HASH):
-  file='C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip'
+  file='F:/STUDY/graphics/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip'
 Old file will be removed and new file downloaded from URL."
     )
-    file(REMOVE "C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip")
+    file(REMOVE "F:/STUDY/graphics/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip")
   endif()
 endif()
 
 set(retry_number 5)
 
 message(VERBOSE "Downloading...
-   dst='C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip'
+   dst='F:/STUDY/graphics/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip'
    timeout='none'
    inactivity timeout='none'"
 )
@@ -119,7 +119,7 @@ foreach(i RANGE ${retry_number})
 
       file(
         DOWNLOAD
-        "${url}" "C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip"
+        "${url}" "F:/STUDY/graphics/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip"
         SHOW_PROGRESS
         # no TIMEOUT
         # no INACTIVITY_TIMEOUT
@@ -136,7 +136,7 @@ foreach(i RANGE ${retry_number})
         check_file_hash(has_hash hash_is_good)
         if(has_hash AND NOT hash_is_good)
           message(VERBOSE "Hash mismatch, removing...")
-          file(REMOVE "C:/Users/17385/Desktop/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip")
+          file(REMOVE "F:/STUDY/graphics/SimpleForest/out/build/x64-Debug/_deps/glfw-subbuild/glfw-populate-prefix/src/3.3.8.zip")
         else()
           message(VERBOSE "Downloading... done")
           return()

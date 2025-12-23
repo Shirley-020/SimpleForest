@@ -3,9 +3,9 @@ out vec4 FragColor;
 
 in vec3 Normal;
 in vec3 FragPos;
-in vec2 TexCoord; // <-- ½ÓÊÕÎÆÀí×ø±ê
+in vec2 TexCoord; // <-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-// ²ÄÖÊ½á¹¹Ìå (±£³Ö²»±ä)
+// ï¿½ï¿½ï¿½Ê½á¹¹ï¿½ï¿½ (ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½)
 struct Material {
     vec3 ambient;
     vec3 diffuse; 
@@ -14,34 +14,36 @@ struct Material {
 }; 
 uniform Material material;
 
-uniform sampler2D texture_diffuse1; // <-- ÐÂÔöÎÆÀí²ÉÑùÆ÷
-uniform bool useTexture; // <-- ¿ØÖÆÊÇ·ñÊ¹ÓÃÎÆÀíµÄ¿ª¹Ø
+uniform sampler2D texture_diffuse1; // <-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+uniform bool useTexture; // <-- ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½
 
-// ... (¹âÕÕ½á¹¹Ìå Light ±£³Ö²»±ä) ...
+// ... (ï¿½ï¿½ï¿½Õ½á¹¹ï¿½ï¿½ Light ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½) ...
 
 uniform vec3 lightDir; 
 uniform vec3 lightColor;
 uniform vec3 viewPos;
 
 void main() {
-    // 1. Âþ·´ÉäÑÕÉ«£º´Ó²ÄÖÊ»òÎÆÀíÖÐ»ñÈ¡
+    // 1. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½Ó²ï¿½ï¿½Ê»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½È¡
     vec3 diffuseColor;
     if (useTexture) {
-        diffuseColor = vec3(texture(texture_diffuse1, TexCoord)); // ²ÉÑùÎÆÀí
+        diffuseColor = vec3(texture(texture_diffuse1, TexCoord)); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     } else {
-        diffuseColor = material.diffuse; // Ê¹ÓÃ´¿É«
+        diffuseColor = material.diffuse; // Ê¹ï¿½Ã´ï¿½É«
     }
 
-    // 2. »·¾³¹â
-    vec3 ambient = material.ambient * lightColor;
+    // 2. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¼ˆé€‚å½“æé«˜çŽ¯å¢ƒå…‰ï¼Œé¿å…é˜´å½±è¿‡é»‘ï¼‰
+    vec3 ambient = material.ambient * lightColor * 1.2;
 
-    // 3. Âþ·´Éä¹âÕÕ
+    // 3. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     vec3 norm = normalize(Normal);
-    vec3 lightDirNorm = normalize(-lightDir); // ¼ÙÉè¹âÔ´·½ÏòÊÇ¹Ì¶¨µÄ
-    float diff = max(dot(norm, lightDirNorm), 0.0);
-    vec3 diffuse = diff * lightColor * diffuseColor; // Ê¹ÓÃ diffuseColor (ÎÆÀí»ò´¿É«)
+    vec3 lightDirNorm = normalize(-lightDir); // ï¿½ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½Ç¹Ì¶ï¿½ï¿½ï¿½
+    float diffRaw = max(dot(norm, lightDirNorm), 0.0);
+    // é˜²æ­¢åˆšç¨å¾®èƒŒå…‰å°±å®Œå…¨å˜é»‘ï¼šç»™æ¼«åå°„ä¸€ä¸ªæœ€å°å¼ºåº¦
+    float diff = max(diffRaw, 0.2);
+    vec3 diffuse = diff * lightColor * diffuseColor; // Ê¹ï¿½ï¿½ diffuseColor (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«)
 
-    // 4. ¾µÃæ¹âÕÕ
+    // 4. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     vec3 viewDir = normalize(viewPos - FragPos);
     vec3 reflectDir = normalize(reflect(lightDirNorm, norm));  
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);

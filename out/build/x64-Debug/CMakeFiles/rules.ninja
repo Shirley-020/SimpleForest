@@ -101,7 +101,7 @@ rule C_STATIC_LIBRARY_LINKER__glfw_Debug
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = "F:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SC:\Users\17385\Desktop\SimpleForest -BC:\Users\17385\Desktop\SimpleForest\out\build\x64-Debug
+  command = "F:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SF:\STUDY\graphics\SimpleForest -BF:\STUDY\graphics\SimpleForest\out\build\x64-Debug
   description = Re-running CMake...
   generator = 1
 

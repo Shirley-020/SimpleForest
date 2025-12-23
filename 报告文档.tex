@@ -1,0 +1,134 @@
+\documentclass[12pt, a4paper]{ctexart}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{booktabs} % 更好的表格线
+\usepackage{url}
+
+\geometry{
+	a4paper,
+	total={170mm,257mm},
+	left=20mm,
+	top=20mm,
+}
+
+\title{\textbf{SimpleForest 3D 场景渲染项目技术报告}}
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	\tableofcontents
+	\newpage
+	
+	\section{项目概览与目标 (Executive Summary)}
+	
+	\begin{itemize}
+		\item \textbf{项目名：} SimpleForest (简单森林)
+		\item \textbf{功能：} 基于 OpenGL 的小场景渲染演示，包括程序化小屋、随机树木、天空盒、ImGui 实时参数面板及 Blinn-Phong 简单光照。
+		\item \textbf{运行时特性：} 程序化几何作为 Assimp 模型的稳健后备；运行时纹理与材质开关控制。
+		\item \textbf{核心目标：} 建立一个高模块化、易扩展的 3D 渲染框架，演示程序化建模、外部模型集成和实时参数调试的能力。
+	\end{itemize}
+	
+	\section{高层架构与模块化设计 (High-Level Architecture)}
+	本项目采用了严格的分层架构，所有功能代码按职责划分至相应的模块目录，确保了高度的解耦和可维护性。
+	
+	\subsection{项目目录结构}
+	\begin{verbatim}
+		/SimpleForest
+		|-- include/ (第三方库)
+		|-- src/
+		|   |-- core/
+		|   |-- geometry/
+		|   |-- scene/
+		|   |-- input/
+		|   |-- main.cpp (程序入口)
+		|-- shaders/ (着色器文件)
+		|-- objects/ (纹理/模型文件)
+	\end{verbatim}
+	
+	\subsection{模块职责划分}
+	\begin{table}[h]
+		\centering
+		\caption{核心模块职责一览}
+		\label{tab:architecture}
+		\begin{tabular}{p{2cm} p{3.7cm} p{8.3cm}}
+			\toprule
+			\textbf{模块目录} & \textbf{核心文件} & \textbf{职责详细说明} \\
+			\midrule
+			\texttt{main.cpp} & N/A & 应用程序入口。负责初始化、资源加载、主循环框架和 ImGui 调度。 \\
+			\midrule
+			\texttt{core/} & \texttt{Shader.*} & 着色器封装 (load/use/setUniform)。 \\
+			& \texttt{Camera.*} & 摄像机逻辑（视图矩阵计算、欧拉角管理）。 \\
+			& \texttt{Texture.*} & 纹理加载（2D/Cubemap，基于 \texttt{stb\_image}）。 \\
+			& \texttt{Model.*} & Assimp 模型加载（归一化、VAO/VBO、Draw()）。 \\
+			& \texttt{PathUtils.*} & 资源路径处理与可移植性支持。 \\
+			\midrule
+			\texttt{geometry/} & \texttt{Mesh.h} & 网格数据结构定义（VAO/VBO/EBO + \texttt{indexCount}）。 \\
+			& \texttt{PrimitiveFactory.*} & 程序化网格生成（\texttt{createCube}, \texttt{createCone}, \texttt{createSkybox} 等）。 \\
+			\midrule
+			\texttt{scene/} & \texttt{Materials.h} & 全局材质参数和颜色定义（用于 Blinn-Phong）。 \\
+			& \texttt{Tree.h} & \texttt{Tree} 结构体与随机树木生成 (\texttt{generateRandomTrees})。 \\
+			& \texttt{HouseRenderer.h} & 小屋渲染逻辑封装 (\texttt{renderDetailedHouse})。 \\
+			\midrule
+			\texttt{input/} & \texttt{Input.*} & 集中处理 GLFW 键鼠回调，转化为场景控制。 \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\section{核心技术与实现细节 (Implementation Details)}
+	
+	\subsection{渲染管线流程 (Main Loop)}
+	主循环遵循严格的顺序，以确保渲染正确性，特别是天空盒的特殊处理：
+	
+	\begin{enumerate}
+		\item \textbf{预处理：} 计算 \texttt{deltaTime}，处理用户输入 (\texttt{processInput})。
+		\item \textbf{清屏：} \texttt{glClear} 并开启 \texttt{GL\_DEPTH\_TEST}。
+		\item \textbf{场景渲染：} 激活 \texttt{basicShader}，设置 Blinn-Phong 光照参数、视图 (\texttt{camera.getView()}) 和投影矩阵。
+		\item \textbf{绘制房屋：} 调用 \texttt{renderDetailedHouse}，绑定墙壁、屋顶等纹理。
+		\item \textbf{绘制树木：} 执行模型加载/程序化回退逻辑（详见下节）。
+		\item \textbf{绘制天空盒：}
+		\begin{itemize}
+			\item 特殊状态：\texttt{glDepthMask(GL\_FALSE)} 和 \texttt{glDepthFunc(GL\_LEQUAL)}。
+			\item 激活 \texttt{skyboxShader}，移除视图矩阵的平移分量 (\texttt{glm::mat4(glm::mat3(view))})。
+			\item 绘制天空盒立方体并绑定 Cubemap 纹理。
+		\end{itemize}
+		\item \textbf{状态恢复：} 恢复 \texttt{glDepthMask(GL\_TRUE)} 和 \texttt{glDepthFunc(GL\_LESS)}。
+		\item \textbf{ImGui 绘制：} 渲染 ImGui 界面。
+		\item \textbf{交换缓冲：} \texttt{glfwSwapBuffers}。
+	\end{enumerate}
+	
+	\subsection{模型的稳健加载与程序化回退机制}
+	
+	项目实现了 Assimp 外部模型加载与程序化几何体的稳健切换机制，确保了程序的鲁棒性。
+	
+	\begin{table}[h]
+		\centering
+		\caption{模型加载与回退机制}
+		\label{tab:fallback}
+		\begin{tabular}{p{2cm} p{3.5cm} p{7.5cm}}
+			\toprule
+			\textbf{阶段} & \textbf{机制} & \textbf{逻辑描述} \\
+			\midrule
+			编译时 & \texttt{ASSIMP\_AVAILABLE} & 宏控制 \texttt{Model.*} 模块的条件编译。 \\
+			\midrule
+			初始化 & 文件检查与加载 & \texttt{main.cpp} 尝试加载 \texttt{objects/tree.obj}。\\
+			\midrule
+			初始化 & 稳健回退 (Fallback) & 若加载失败 (\texttt{tree.obj} 不存在或 Assimp 错误)，则 \texttt{treeModel} 被置为 \texttt{nullptr}。 \\
+			\midrule
+			渲染时 & 动态分支 & \texttt{if (treeModel != nullptr)} 则调用 \texttt{Model::Draw()}；\textbf{否则} 使用 \texttt{cylinder} (树干) 和 \texttt{cone} (树冠) 程序化几何体进行绘制。 \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\subsection{交互式调试与控制 (ImGui)}
+	\textbf{ImGui 实时参数面板} 提供了关键的运行时调试功能：
+	\begin{itemize}
+		\item \textbf{全局纹理开关 (\texttt{useTextureGlobally})}：快速在纹理贴图和纯色光照模式之间切换，用于分离调试纹理和光照计算。
+		\item \textbf{材质/颜色调整}：实时修改小屋和树木的漫反射颜色 (\texttt{ColorEdit3})。
+		\item \textbf{光照控制}：实时调整光源方向 (\texttt{lightDir}) 和颜色 (\texttt{lightColor})。
+		\item \textbf{输入切换}：捕获/释放鼠标按钮，方便在 3D 视图和 UI 交互之间快速切换。
+	\end{itemize}
+	
+\end{document}

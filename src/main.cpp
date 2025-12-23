@@ -77,7 +77,7 @@ int main() {
 	
     // 加载着色器
     Shader basicShader;
-    if (!basicShader.load("shaders/basic.vert", "shaders/basic.frag")) {
+    if (!basicShader.load("shaders/basic.vs", "shaders/basic.fs")) {
         std::cerr << "Failed to load basic shaders\n";
         return -1;
     }
@@ -206,17 +206,18 @@ int main() {
         if (treeModel != nullptr) {
             // 使用加载的模型渲染树木
             for (auto& tree : trees) {
-                float scale = tree.scale; // 获取随机缩放因子
-                float finalScale = scale * 20.0f; // 最终缩放值
-                
-                // 创建模型变换矩阵：平移 + 旋转 + 缩放
-                // 模型归一化后范围是 [-1, 1]，最低点在 Y = -1
-                // 变换顺序（从右到左应用）：先缩放，再调整Y位置，最后移动到目标位置
-                glm::mat4 model = glm::mat4(1.0f);
-                // 移动到目标位置
-                model = glm::translate(model, tree.position);
-           
-                model = glm::translate(model, glm::vec3(0.0f, -50.0f, 0.0f));
+                float scale = tree.scale; // 随机缩放因子
+                float finalScale = scale * 20.0f; // 现有比例因子（可调整）
+
+                // 读取模型边界（模型已在加载时计算 bounding box）
+                glm::vec3 modelMin = treeModel->getBoundingBoxMin(); // 本地模型坐标系下最小点
+                float modelScaleFactor = treeModel->scaleFactor;     // 加载时 normalize 得到的 scaleFactor
+
+                // 计算使模型底部贴地的 y 偏移（考虑 normalize 与最终缩放）
+                float yOffset = -modelMin.y * modelScaleFactor * finalScale;
+
+                // 将模型先移动到目标位置（包含 yOffset），再缩放
+                glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(tree.position.x, tree.position.y + 1.5 * yOffset, tree.position.z));
                 
                 // 应用缩放
                 model = glm::scale(model, glm::vec3(finalScale));

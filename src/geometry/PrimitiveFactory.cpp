@@ -321,63 +321,61 @@ Mesh createDoor(float width, float height) {
 
 Mesh createRoof(float width, float depth, float pitch) {
     float halfW = width * 0.5f;
-    float overhang = 0.0f; // 屋檐伸出墙体的距离
+    float halfD = depth * 0.5f;
     float roofHeight = width * pitch * 0.5f; // 基于宽度计算高度，pitch 是坡度
 
+    // 四面体屋顶的4个顶点：
+    // 顶点0: 底面左下 (-halfW, 0.0f, -halfD)
+    // 顶点1: 底面右下 (halfW, 0.0f, -halfD)  
+    // 顶点2: 底面右上 (halfW, 0.0f, halfD)
+    // 顶点3: 底面左上 (-halfW, 0.0f, halfD)
+    // 顶点4: 顶部中心 (0.0f, roofHeight, 0.0f)
+
     std::vector<float> vertices = {
-        // ------------------ 原始屋顶的 12 个顶点 ------------------
-        // P(3), N(3), T(2) -> 8 floats per vertex
+        // ------------------ 四个三角形面 ------------------
+        // 每个面3个顶点，共12个顶点
+        // 格式：位置(3), 法线(3), 纹理坐标(2) -> 8个float
 
-        // 0: 前屋檐左下 (-halfW, 0.0f, overhang)
-        -halfW, 0.0f, overhang,     0.0f, 0.447f, 0.894f,    0.0f, 0.0f,
-        // 1: 前屋檐右下 (halfW, 0.0f, overhang)
-         halfW, 0.0f, overhang,     0.0f, 0.447f, 0.894f,    1.0f, 0.0f,
-         // 2: 前屋顶尖 (0.0f, roofHeight, 0.0f)
-          0.0f, roofHeight, 0.0f,    0.0f, 0.447f, 0.894f,    0.5f, 1.0f,
+        // 前面 (顶点0,1,4)
+        -halfW, 0.0f, -halfD,    0.0f, 0.447f, 0.894f,    0.0f, 0.0f,  // 左下
+         halfW, 0.0f, -halfD,    0.0f, 0.447f, 0.894f,    1.0f, 0.0f,  // 右下
+         0.0f, roofHeight, 0.0f, 0.0f, 0.447f, 0.894f,    0.5f, 1.0f,  // 顶部
 
-          // 3: 后屋檐左下 (-halfW, 0.0f, -depth)
-          -halfW, 0.0f, -depth,       0.0f, 0.447f, -0.894f,   0.0f, 0.0f,
-          // 4: 后屋檐右下 (halfW, 0.0f, -depth)
-           halfW, 0.0f, -depth,       0.0f, 0.447f, -0.894f,   1.0f, 0.0f,
-           // 5: 后屋顶尖 (0.0f, roofHeight, -depth)
-            0.0f, roofHeight, -depth,  0.0f, 0.447f, -0.894f,   0.5f, 1.0f,
+         // 右面 (顶点1,2,4)
+          halfW, 0.0f, -halfD,    0.894f, 0.447f, 0.0f,    0.0f, 0.0f,  // 右下
+          halfW, 0.0f,  halfD,    0.894f, 0.447f, 0.0f,    1.0f, 0.0f,  // 右上
+          0.0f, roofHeight, 0.0f, 0.894f, 0.447f, 0.0f,    0.5f, 1.0f,  // 顶部
 
-            // 6: 左侧面左下 (-halfW, 0.0f, 0.0f)
-            -halfW, 0.0f, 0.0f,         -0.894f, 0.447f, 0.0f,   0.0f, 0.0f,
-            // 7: 左侧面右下 (-halfW, 0.0f, -depth)
-            -halfW, 0.0f, -depth,       -0.894f, 0.447f, 0.0f,   1.0f, 0.0f,
-            // 8: 左侧面中上 (0.0f, roofHeight, -depth/2)
-             0.0f, roofHeight, -depth / 2, -0.894f, 0.447f, 0.0f, 0.5f, 1.0f,
+          // 后面 (顶点2,3,4)
+           halfW, 0.0f, halfD,     0.0f, 0.447f, -0.894f,   0.0f, 0.0f,  // 右上
+          -halfW, 0.0f, halfD,     0.0f, 0.447f, -0.894f,   1.0f, 0.0f,  // 左上
+           0.0f, roofHeight, 0.0f, 0.0f, 0.447f, -0.894f,   0.5f, 1.0f,  // 顶部
 
-             // 9: 右侧面左下 (halfW, 0.0f, 0.0f)
-              halfW, 0.0f, 0.0f,         0.894f, 0.447f, 0.0f,    0.0f, 0.0f,
-              // 10: 右侧面右下 (halfW, 0.0f, -depth)
-               halfW, 0.0f, -depth,       0.894f, 0.447f, 0.0f,    1.0f, 0.0f,
-               // 11: 右侧面中上 (0.0f, roofHeight, -depth/2)
-                0.0f, roofHeight, -depth / 2, 0.894f, 0.447f, 0.0f,  0.5f, 1.0f,
+           // 左面 (顶点3,0,4)
+           -halfW, 0.0f,  halfD,    -0.894f, 0.447f, 0.0f,   0.0f, 0.0f,  // 左上
+           -halfW, 0.0f, -halfD,    -0.894f, 0.447f, 0.0f,   1.0f, 0.0f,  // 左下
+            0.0f, roofHeight, 0.0f, -0.894f, 0.447f, 0.0f,   0.5f, 1.0f,  // 顶部
 
-                // ------------------ 新增的 4 个底面顶点 (索引从 12 开始) ------------------
-                // 法线朝下: (0.0, -1.0, 0.0)
-
-                // 12: 底面 - 前左 (-halfW, 0.0f, overhang)
-                -halfW, 0.0f, overhang,     0.0f, -1.0f, 0.0f,    0.0f, 0.0f,
-                // 13: 底面 - 前右 (halfW, 0.0f, overhang)
-                 halfW, 0.0f, overhang,     0.0f, -1.0f, 0.0f,    1.0f, 0.0f,
-                 // 14: 底面 - 后右 (halfW, 0.0f, -depth)
-                  halfW, 0.0f, -depth,       0.0f, -1.0f, 0.0f,    1.0f, 1.0f,
-                  // 15: 底面 - 后左 (-halfW, 0.0f, -depth)
-                  -halfW, 0.0f, -depth,       0.0f, -1.0f, 0.0f,    0.0f, 1.0f
+            // ------------------ 底面 (可选) ------------------
+            // 四面体屋顶通常没有底面，但如果你想要可以加上
+            // 底面是正方形，由两个三角形组成
+            -halfW, 0.0f, -halfD,    0.0f, -1.0f, 0.0f,    0.0f, 0.0f,  // 左下
+             halfW, 0.0f, -halfD,    0.0f, -1.0f, 0.0f,    1.0f, 0.0f,  // 右下
+             halfW, 0.0f,  halfD,    0.0f, -1.0f, 0.0f,    1.0f, 1.0f,  // 右上
+            -halfW, 0.0f,  halfD,    0.0f, -1.0f, 0.0f,    0.0f, 1.0f,  // 左上
     };
 
     // 索引数据
     std::vector<unsigned int> indices = {
-        // 原始屋顶的四个面
-        0, 1, 2,     // 前三角形
-        3, 4, 5,     // 后三角形
-        6, 7, 8,     // 左侧面 
-        9, 10, 11,   // 右侧面 
-        12, 13, 14,  // 底面三角形 1
-        14, 15, 12   // 底面三角形 2 
+        // 四个侧面三角形
+        0, 1, 2,    // 前面
+        3, 4, 5,    // 右面
+        6, 7, 8,    // 后面
+        9, 10, 11,  // 左面
+
+        // 底面 (两个三角形，可选)
+        12, 13, 14,  // 底面三角形1
+        14, 15, 12   // 底面三角形2
     };
 
     Mesh m;
@@ -412,7 +410,7 @@ Mesh createRoof(float width, float depth, float pitch) {
 }
 
 Mesh createSkybox() {
-    float scale = 100.0f;
+    float scale = 1000.0f;
     float skyboxVertices[] = {
         -1.0f * scale,  1.0f * scale, -1.0f * scale,
         -1.0f * scale, -1.0f * scale, -1.0f * scale,

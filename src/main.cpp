@@ -119,10 +119,10 @@ int main() {
     
     // 光照参数
     glm::vec3 lightDir = glm::normalize(glm::vec3(-0.3f, -1.0f, -0.5f));
-    glm::vec3 lightColor = glm::vec3(1.0f, 0.95f, 0.9f);
+	glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 0.9f);// 暖色调光照
 
     // 投影矩阵
-    glm::mat4 proj = glm::perspective(glm::radians(75.0f), (float)SCR_WIDTH / SCR_HEIGHT, 0.1f, 500.0f);
+    glm::mat4 proj = glm::perspective(glm::radians(60.0f), (float)SCR_WIDTH / SCR_HEIGHT, 0.1f, 10000.0f);
 
     // 生成随机树木位置
     // 参数说明：树数量, x范围, z范围, 房子X范围(缓冲区), 房子Z范围(缓冲区), 树之间最小距离
@@ -207,7 +207,7 @@ int main() {
             // 使用加载的模型渲染树木
             for (auto& tree : trees) {
                 float scale = tree.scale; // 随机缩放因子
-                float finalScale = scale * 20.0f; // 现有比例因子（可调整）
+                float finalScale = scale * 15.0f; // 现有比例因子（可调整）
 
                 // 读取模型边界（模型已在加载时计算 bounding box）
                 glm::vec3 modelMin = treeModel->getBoundingBoxMin(); // 本地模型坐标系下最小点
@@ -229,7 +229,7 @@ int main() {
                 basicShader.setVec3("material.specular", treeTrunkColor.specular);
                 basicShader.setFloat("material.shininess", treeTrunkColor.shininess);
                 
-                // 绑定纹理（优先使用模型自带的纹理，如果模型没有纹理则使用树叶纹理作为后备）
+                // 绑定纹理（优先使用模型自带的纹理，树叶纹理作为后备）
                 glActiveTexture(GL_TEXTURE0);
                 if (!treeModel->textures_loaded.empty()) {
                     glBindTexture(GL_TEXTURE_2D, treeModel->textures_loaded[0].id); // 使用模型自带的纹理
@@ -310,6 +310,8 @@ int main() {
                 glDrawElements(GL_TRIANGLES, cone.indexCount, GL_UNSIGNED_INT, 0);
             }
         }
+
+        
 
         // 绘制天空盒
         glDepthMask(GL_FALSE);
